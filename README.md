@@ -1,4 +1,4 @@
-# 🚀 Alex Morgan — MERN Portfolio
+# Prashant Portfolio
 
 Full-stack portfolio built with React + Vite, Tailwind CSS, Framer Motion, Node.js, Express, and MongoDB.
 
