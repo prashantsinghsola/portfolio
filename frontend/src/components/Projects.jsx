@@ -8,6 +8,16 @@ const FALLBACK_PROJECTS = [
   { _id: '3', image: '/images/projects/3.png', icon: '☕', title: 'AI-Powered Java Web App', desc: 'Enterprise-grade Java web application incorporating AI-integrated modules, object-oriented REST API routing, and optimized MySQL queries. Developed during HCL Tech internship.', tags: ['Java OOP', 'MySQL', 'REST APIs', 'AI Integration', 'Agile', 'SDLC'], demo: '#', github: 'https://github.com/prashantsinghsola', color: '#F89820' },
 ]
 
+const normalizeProject = (project) => {
+  if (project?.title === 'CareerAI') {
+    return {
+      ...project,
+      demo: 'https://careercompasswithai.vercel.app/'
+    }
+  }
+  return project
+}
+
 function ProjectCard({ p, index }) {
   const ref = useRef(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
@@ -70,9 +80,15 @@ export default function Projects() {
 
   useEffect(() => {
     axios.get('/api/projects')
-      .then(r => { if (r.data?.length) setProjects(r.data) })
+      .then(r => {
+        if (r.data?.length) {
+          setProjects(r.data.map(normalizeProject))
+        }
+      })
       .catch(() => {}) // silently use fallback
   }, [])
+
+  const safeProjects = projects.map(normalizeProject)
 
   return (
     <section id="projects" className="py-24 bg-[#0d1117]">
@@ -93,7 +109,7 @@ export default function Projects() {
         </motion.div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {projects.map((p, i) => <ProjectCard key={p._id || i} p={p} index={i} />)}
+          {safeProjects.map((p, i) => <ProjectCard key={p._id || i} p={p} index={i} />)}
         </div>
       </div>
     </section>
